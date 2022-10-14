@@ -6,7 +6,6 @@ module.exports = {
   extends: [
     'plugin:react/recommended',
     'standard-with-typescript',
-    'prefer-arrow-functions',
   ],
   overrides: [],
   parserOptions: {
@@ -18,17 +17,8 @@ module.exports = {
   rules: {
     eqeqeq: 'error',
     semi: 'off',
-    'comma-dangle': 'always',
+    'comma-dangle': 'off',
     '@typescript-eslint/semi': 'off',
     'func-style': ['error', 'declaration', { allowArrowFunctions: true }],
-    'prefer-arrow-functions/prefer-arrow-functions': [
-      'warn',
-      {
-        classPropertiesAllowed: false,
-        disallowPrototype: false,
-        returnStyle: 'unchanged',
-        singleReturnOnly: false,
-      },
-    ],
   },
 };
