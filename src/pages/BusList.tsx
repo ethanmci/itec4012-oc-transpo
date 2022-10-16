@@ -6,6 +6,8 @@ interface Props {
 };
 
 const BusList: React.FC<Props> = ({ tempProp }) => {
+  // a bit scuffed to look at but this bypasses some CORS rules that give trouble during dev, copy this for any api calls
+  // the extra api.allorigins.win is bypassed when in production
   const res = fetch(`${(process.env.NODE_ENV ?? 'development') === 'development' ? 'https://api.allorigins.win/get?url=' : ''}
     ${encodeURIComponent(`https://api.octranspo1.com/v2.0/GetRouteSummaryForStop?${new URLSearchParams({
       appID: process.env.REACT_APP_OC_APP_ID ?? 'KEY_NOT_FOUND',
