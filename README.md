@@ -1,6 +1,40 @@
-# Getting Started with Create React App
+# 🚌 OC Transpo Web-app for ITEC4012
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Development setup
+
+### Getting started
+
+Before you do any development work, make sure all node modules are installed to your local machine using `npm i`.
+
+### API Keys
+
+API keys should be stored in a `.env.local` file in the root directory. This file is not synced through git, you will need to make your own local file for everything to work properly. All of the environment variables that will be required are listed in the default `.env` variable.
+
+Example `.env.local`
+
+```
+MAPS_API_KEY=GOOGLE MAPS API KEY HERE
+REACT_APP_OC_API_KEY=OC TRANSPO API KEY HERE
+REACT_APP_OC_APP_ID=OC TRANSPO APP ID HERE
+```
+
+### Project Layout
+
+The majority of the project is stored in `./src`. Here the project is split into components, pages, and an index file that contains setup for the react router.
+
+#### The components lab page
+
+When the application is running in development mode a "components lab" page will be built.
+
+### Recommended Plugins
+
+To make your life easier, the following VScode plugins are recommended:
+
+- JavaScript and TypeScript Nightly
+- ESLint
+- Prettier
+- Tailwind CSS Intellisense
+- GitLens
 
 ## Available Scripts
 
