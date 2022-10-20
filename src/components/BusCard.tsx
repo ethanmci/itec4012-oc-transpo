@@ -9,8 +9,8 @@ interface Props {
 
 const Layout: React.FC<Props> = ({ busName, color, textColor }) => {
   return (
-    <div className='p-5 inline-block shadow-sm' style={{ backgroundColor: color, color: textColor }}>
-      { busName }
+    <div className='p-5 inline-block m-1 rounded-md md:w-1/12 w-1/3 h-14 shadow-sm relative' style={{ backgroundColor: `#${color}`, color: `#${textColor}` }}>
+      <p className='text-center absolute'>{ busName }</p>
     </div>
   );
 }

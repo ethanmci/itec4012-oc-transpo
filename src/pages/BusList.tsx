@@ -28,9 +28,7 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
   // a bit scuffed to look at but this bypasses some CORS rules that give trouble during dev, copy this for any api calls
   // the extra api.allorigins.win is bypassed when in production
   useEffect(() => {
-    if (Object.keys(routeList).length !== 0) {
-      return;
-    }
+    if (Object.keys(routeList).length !== 0) return;
 
     void fetch(`${
       (process.env.NODE_ENV ?? 'development') === 'development'
@@ -54,13 +52,15 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
       });
   }, []);
 
+  console.log(routeList);
+
   const busDisplayTemp = routeList.Gtfs?.map((key, index) => {
     return (
       <BusCard
         key={index}
         busName={key.route_short_name}
         color={key.route_color}
-        textColor={key.route_color}
+        textColor={key.route_text_color}
       ></BusCard>
     );
   });
@@ -68,7 +68,14 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
   return (
     <>
       The bus list would be here!
-      { busDisplayTemp }
+      <div className='relative'>
+        <form className='block grow'>
+          <input className='w-1/2 p-3 border-solid border-2 text-xl border-slate-600 rounded-md' type={'number'} name='bus-search' />
+        </form>
+      </div>
+      <div className='w-full py-10 md:px-48 px-4'>
+        { busDisplayTemp }
+      </div>
     </>
   );
 };
