@@ -13,9 +13,9 @@ const e = React.createElement;
 
 const BusTile: React.FC<Props> = ({ busName, color, textColor }) => {
   return e('div', {
-    className: 'p-5 inline-block m-1 rounded-md md:w-1/12 w-1/3 h-14 shadow-sm relative',
+    className: 'p-5 rounded-md hover:border-2 h-14 shadow-sm relative',
     style: { backgroundColor: `#${color}`, color: `#${textColor}` }
-  }, e('p', { className: 'text-center' }, busName));
+  }, e('p', { className: 'text-center text-xl' }, busName));
 }
 
 export default BusTile;
