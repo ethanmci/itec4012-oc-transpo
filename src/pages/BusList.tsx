@@ -89,9 +89,11 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
       </div>
       { /* TODO FIX THIS OML */ }
       <div className='w-full py-10 md:px-44 px-4'>
-        <div className='pt-10 bg-slate-900 rounded-lg h-64 overflow-y'>
-          <div className='grid md:grid-cols-5 grid-cols-1 gap-2 p-4 h-full'>
-            { busDisplayTemp }
+        <div className='p-10 bg-slate-900 rounded-lg'>
+          <div className='bg-slate-900 h-96 rounded-xl overflow-hidden overflow-y-scroll'>
+            <div className='grid md:grid-cols-5 grid-cols-1 grid-rows-min gap-2 p-4 h-fit'>
+              { busDisplayTemp }
+            </div>
           </div>
         </div>
       </div>
