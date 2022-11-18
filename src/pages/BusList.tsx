@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BusTile from '../components/BusTile';
-import SearchBar from '../components/SearchBar';
+// import SearchBar from '../components/SearchBar'; reimport later
 interface Props {
   tempProp?: object
 }
@@ -25,7 +25,7 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
   // const radius: number = 8;
 
   const [routeList, setRouteList] = useState<GtfsQuery>({});
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [filteredRouteList, setFilteredRouteList] = useState<GtfsQuery>({});
 
   // a bit scuffed to look at but this bypasses some CORS rules that give trouble during dev, copy this for any api calls
   // the extra api.allorigins.win is bypassed when in production
@@ -51,6 +51,7 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
       })
       .then((data) => {
         setRouteList(JSON.parse(data.contents));
+        setFilteredRouteList(JSON.parse(data.contents));
       });
   }, []);
 
@@ -58,11 +59,7 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
     console.log(pos);
   })
 
-  const filterSearch = (value: Bus): boolean => {
-    if (searchValue.length === 0) return true;
-    return value.route_short_name.includes(searchValue);
-  }
-  const busDisplayTemp = routeList.Gtfs?.filter(filterSearch).map((key, index) => {
+  const busDisplayTemp = filteredRouteList.Gtfs?.map((key, index) => {
     return (
       <BusTile
         key={index}
@@ -73,13 +70,30 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
     );
   });
 
+  const filterBuses = (input: React.ChangeEvent<HTMLInputElement>): void => {
+    console.log(input.target.value);
+    const inputValue = input.target.value.trim();
+    const returnArr: Bus[] = [];
+    routeList.Gtfs?.forEach(e => {
+      if (e.route_short_name.includes(inputValue)) returnArr.push(e);
+    });
+    setFilteredRouteList({ ...setFilteredRouteList, Gtfs: [...returnArr] });
+  }
+
   return (
     <>
       <div className='relative'>
-        <SearchBar setSearchState={ setSearchValue }/>
+        <form className='absolute w-2/3 flex grow items-start gap-1 z-50 inset-x-1/2' style={{ transform: 'translate(-50%, 0)' }}>
+          <input onChange={(e) => filterBuses(e)} className='flex-auto h-14 p-2 border-solid border-2 text-xl border-slate-600 rounded-md shadow-md' type='text' name='bus-search' />
+        </form>
       </div>
-      <div className='w-full py-10 md:px-48 px-4'>
-        { busDisplayTemp }
+      { /* TODO FIX THIS OML */ }
+      <div className='w-full py-10 md:px-44 px-4'>
+        <div className='pt-10 bg-slate-900 rounded-lg h-64 overflow-y'>
+          <div className='grid md:grid-cols-5 grid-cols-1 gap-2 p-4 h-full'>
+            { busDisplayTemp }
+          </div>
+        </div>
       </div>
     </>
   );
