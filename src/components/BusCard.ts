@@ -10,11 +10,11 @@ interface Props {
 // this makes using this function MUCH cleaner
 const e = React.createElement;
 
-const Layout: React.FC<Props> = ({ busName, color, textColor }) => {
-  return e('div', {
-    className: 'p-5 inline-block m-1 rounded-md md:w-1/12 w-1/3 h-14 shadow-sm relative',
+const BusCard: React.FC<Props> = ({ busName, color, textColor }) => {
+  return e('form', {
+    className: 'p-5 rounded-md h-16 hover:border-2 hover:border-white relative transition ease-in-out delay-75',
     style: { backgroundColor: `#${color}`, color: `#${textColor}` }
-  }, e('p', { className: 'text-center text-' }, busName));
+  }, e('p', { className: 'text-center text-l' }, busName));
 }
 
-export default Layout;
+export default BusCard;
