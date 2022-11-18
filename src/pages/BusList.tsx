@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import BusCard from '../components/BusCard';
-
-// nothing for now, just setting this up for later(?)
+import BusTile from '../components/BusTile';
+import SearchBar from '../components/SearchBar';
 interface Props {
   tempProp?: object
 }
@@ -23,7 +22,10 @@ interface GtfsQuery {
 }
 
 const BusList: React.FC<Props> = ({ tempProp }) => {
+  // const radius: number = 8;
+
   const [routeList, setRouteList] = useState<GtfsQuery>({});
+  const [searchValue, setSearchValue] = useState<string>('');
 
   // a bit scuffed to look at but this bypasses some CORS rules that give trouble during dev, copy this for any api calls
   // the extra api.allorigins.win is bypassed when in production
@@ -52,26 +54,29 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
       });
   }, []);
 
-  console.log(routeList);
+  navigator.geolocation.getCurrentPosition((pos) => {
+    console.log(pos);
+  })
 
-  const busDisplayTemp = routeList.Gtfs?.map((key, index) => {
+  const filterSearch = (value: Bus): boolean => {
+    if (searchValue.length === 0) return true;
+    return value.route_short_name.includes(searchValue);
+  }
+  const busDisplayTemp = routeList.Gtfs?.filter(filterSearch).map((key, index) => {
     return (
-      <BusCard
+      <BusTile
         key={index}
         busName={key.route_short_name}
         color={key.route_color}
         textColor={key.route_text_color}
-      ></BusCard>
+      ></BusTile>
     );
   });
 
   return (
     <>
-      The bus list would be here!
       <div className='relative'>
-        <form className='block grow'>
-          <input className='w-1/2 p-3 border-solid border-2 text-xl border-slate-600 rounded-md' type={'number'} name='bus-search' />
-        </form>
+        <SearchBar setSearchState={ setSearchValue }/>
       </div>
       <div className='w-full py-10 md:px-48 px-4'>
         { busDisplayTemp }
