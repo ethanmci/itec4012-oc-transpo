@@ -13,7 +13,7 @@ const e = React.createElement;
 const BusSearch: React.FC<Props> = ({ busName, color, textColor }) => {
   return e('div', {
     className: 'p-5 inline-block m-1 rounded-md md:w-1/12 w-1/3 h-14 shadow-sm relative',
-    style: { backgroundColor: `#${color}`, color: `#${textColor}` }
+    style: { backgroundColor: `#${color}`, color: `#${textColor}` },
   }, e('p', { className: 'text-center text-' }, busName));
 }
 

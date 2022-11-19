@@ -4,12 +4,12 @@ import HeaderTile from './HeaderTile';
 const headerLinks = [
   {
     title: 'Home',
-    link: '/'
+    link: '/',
   },
   {
     title: 'Bus Search',
-    link: '/list'
-  }
+    link: '/list',
+  },
 ];
 
 const Header: React.FC = () => {

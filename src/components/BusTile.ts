@@ -13,8 +13,9 @@ const e = React.createElement;
 
 const BusTile: React.FC<Props> = ({ busName, color, textColor }) => {
   return e('div', {
-    className: 'p-5 rounded-md hover:border-2 h-14 shadow-sm relative',
-    style: { backgroundColor: `#${color}`, color: `#${textColor}` }
+    onClick: () => console.log(`Click handled for: ${busName}!`),
+    className: 'p-5 rounded-sm hover:border-2 h-14 shadow-sm relative transition-opacity duration-75',
+    style: { backgroundColor: `#${color}`, color: `#${textColor}` },
   }, e('p', { className: 'text-center text-xl' }, busName));
 }
 

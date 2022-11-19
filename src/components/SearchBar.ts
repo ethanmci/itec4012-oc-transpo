@@ -13,8 +13,8 @@ const SearchBar: React.FC<Props> = ({ setSearchState }) => {
     e('input', {
       onInput: (e: React.ChangeEvent<HTMLTextAreaElement>) => { setSearchState(e.target.value) },
       className: 'm-auto md:w-1/2 w-5/6 h-14 p-2 border-solid border-2 text-lg text-center border-slate-600 rounded-md',
-      type: 'number'
-    })
+      type: 'number',
+    }),
   );
 }
 
