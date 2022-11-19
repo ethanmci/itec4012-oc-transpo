@@ -3,18 +3,13 @@ import Header from '../Header';
 import { Outlet } from 'react-router-dom';
 import './Layout.css';
 
-// defining the component props
-interface Props {
-  children?: React.ReactNode
-}
-
 // this component wraps everything, we can put headers or footers here
-const Layout: React.FC<Props> = ({ children }) => {
+const Layout: React.FC = () => {
   return (
-    <>
+    <div id='layout' className='h-screen flex flex-col'>
       <Header/>
       <Outlet/>
-    </>
+    </div>
   );
 }
 

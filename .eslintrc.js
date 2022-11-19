@@ -17,8 +17,9 @@ module.exports = {
   rules: {
     eqeqeq: 'error',
     semi: 'off',
-    'comma-dangle': 'off',
+    'comma-dangle': ['error', 'always-multiline'],
     '@typescript-eslint/semi': 'off',
+    '@typescript-eslint/comma-dangle': 'off',
     'func-style': ['error', 'declaration', { allowArrowFunctions: true }],
   },
 };
