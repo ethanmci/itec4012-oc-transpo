@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import BusMap from '../components/BusMap'
 import BusTile from '../components/BusTile'
 // import SearchBar from '../components/SearchBar'; reimport later
 interface Props {
@@ -26,6 +27,7 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
 
   const [routeList, setRouteList] = useState<GtfsQuery>({})
   const [filteredRouteList, setFilteredRouteList] = useState<GtfsQuery>({})
+  const [location, setLocation] = useState<google.maps.LatLngLiteral>({ lat: 0, lng: 0 });
 
   // a bit scuffed to look at but this bypasses some CORS rules that give trouble during dev, copy this for any api calls
   // the extra api.allorigins.win is bypassed when in production
@@ -55,10 +57,10 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
       })
   }, [])
 
-  // temporary
+  // setting the current position
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      console.log(pos)
+    navigator.geolocation.getCurrentPosition((pos: GeolocationPosition) => {
+      setLocation({ ...location, lat: pos.coords.latitude, lng: pos.coords.longitude });
     })
   }, [])
 
@@ -85,8 +87,8 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
 
   return (
     <div className='overflow-hidden grow'>
-      <div className='w-full h-3/5 bg-slate-500 shadow-inner'>
-        the map will be here!
+      <div className='w-full h-3/5 shadow-inner'>
+        <BusMap selectedBus={'none'} location={ location }></BusMap>
       </div>
       <div className="relative">
         <form
