@@ -67,6 +67,7 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
       <BusTile
         key={index}
         busName={item.route_short_name}
+        busId={item.route_id}
         color={item.route_color}
         textColor={item.route_text_color}
       ></BusTile>
