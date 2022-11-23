@@ -95,7 +95,7 @@ const options: google.maps.MapOptions = {
   ],
 }
 
-const BusMap: React.FC<Props> = ({ selectedBus, location }) => {
+const BusMap: React.FC<Props> = ({ location }) => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_MAPS_API_KEY ?? 'KEY_UNDEFINED',
   });
