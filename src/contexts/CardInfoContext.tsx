@@ -1,22 +1,30 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import React, { createContext, useState } from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React, { createContext, useContext, useState } from 'react';
+import Test from './test'
 
 interface ICardContext {
-  isChecked: boolean
-  changeValue: (arg: boolean) => void
+  val: boolean
+  changeValue: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const sampleAppContext: ICardContext = {
-  isChecked: false,
-  changeValue: arg => console.warn('test'),
+  val: false,
+  changeValue: () => { console.log('placeholder fn') },
 }
 
-export const AppCtx = createContext<ICardContext>(sampleAppContext);
+const AppCtx = createContext<ICardContext>(sampleAppContext);
 
 // Provider in your app
 
 export const App = () => {
-  const [isChecked, setCheckedC] = useState<ICardContext['isChecked']>(false);
+  const [val, setVal] = useState<boolean>(false);
+  // the change value should be updated but it's not???
   return (
-<AppCtx.Provider value={{ isChecked, changeValue: setCheckedC }}>...</AppCtx.Provider>)
+    <AppCtx.Provider value={{ val, changeValue: setVal }}>
+        <Test/>
+    </AppCtx.Provider>
+  )
 }
+
+export const useSelectedContext = () => useContext(AppCtx)

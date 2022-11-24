@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import ToggleSwitch from './ToggleSwitch'
-import { AppCtx } from '../contexts/CardInfoContext'
+import { useSelectedContext } from '../contexts/CardInfoContext'
 // defining the component props
 interface Props {
   busName: string // this is actually the bus number
@@ -34,8 +34,7 @@ interface GtfsQuery {
 }
 
 const BusCard: React.FC<Props> = ({ busName, color, textColor, busId }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { isChecked, changeValue } = useContext(AppCtx);
+  const { val, changeValue } = useSelectedContext();
   // query trips and filter by ID, get name and direciton
   const [busTrips, setBusTrips] = useState<BusName[]>([]);
   const [tripList, setTripList] = useState<GtfsQuery>({});
@@ -82,20 +81,10 @@ const BusCard: React.FC<Props> = ({ busName, color, textColor, busId }) => {
 
   useEffect(() => {
     console.log('checked = ' + checked.toString());
-    changeValue(true)
-    console.log('isChecked = ' + isChecked.toString())
+    // No idea why this doesn't work
+    if (changeValue !== undefined) changeValue(!val)
+    console.log('Context checked value = ' + val.toString())
   }, [checked])
-  /*
-  return e('div', {
-    className: 'p-5 rounded-md h-16 hover:border-2 hover:border-white relative transition ease-in-out delay-75 flex justify-between ',
-    style: { backgroundColor: `#${color}`, color: `#${textColor}` },
-  }, e('p', { className: 'align-middle text-l p-5' }, busName),
-  e('p', { className: ' text-l p-5' }, givenName),
-  e('p', { className: ' text-l p-5' }, direction),
-  e('label', { className: 'inline-flex relative items-center cursor-pointer' },
-    e('input', { type: 'checkbox', className: ' sr-only peer', value: '' }),
-    e('div', { className: ' w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[""] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600' }),
-    e('span', { className: ' ml-3 text-sm font-medium text-gray-900 dark:text-gray-300' }), direction)); */
   return (
     <div>
       <div style={{ backgroundColor: `#${color}`, color: `#${textColor}` }} className='p-5 rounded-md h-16 hover:border-2 hover:border-white relative transition ease-in-out delay-75 flex justify-between'>

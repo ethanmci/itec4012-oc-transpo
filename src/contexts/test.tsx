@@ -1,13 +1,12 @@
 // Consume in your app
-import React, { useContext } from 'react';
-import { AppCtx } from './CardInfoContext'
+import React from 'react';
+import { useSelectedContext } from './CardInfoContext'
 
 const PostInfo = (): any => {
-  const appContext = useContext(AppCtx);
-  if (appContext === undefined) return
+  const { val } = useSelectedContext();
   return (
     <div>
-        isChecked: {appContext.isChecked}
+        Context Checked Value: {val.toString()}
     </div>
   );
 }
