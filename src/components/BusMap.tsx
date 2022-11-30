@@ -1,5 +1,5 @@
 import { useLoadScript, GoogleMap } from '@react-google-maps/api';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // defining the component props
 interface Props {
@@ -7,8 +7,10 @@ interface Props {
   location: google.maps.LatLngLiteral
 }
 
-interface MapProps {
+interface MapProps extends google.maps.MapOptions {
   location: google.maps.LatLngLiteral
+  onClick?: (e: google.maps.MapMouseEvent) => void
+  onIdle?: (map: google.maps.Map) => void
 }
 
 const options: google.maps.MapOptions = {
@@ -95,10 +97,17 @@ const options: google.maps.MapOptions = {
   ],
 }
 
-const BusMap: React.FC<Props> = ({ location }) => {
+const BusMap: React.FC<Props> = ({ location, onClick, onIdle }) => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_MAPS_API_KEY ?? 'KEY_UNDEFINED',
   });
+  /*
+  useEffect(() => {
+    if(BusMap) {
+
+    }
+  }, [onClick, onIdle])
+  */
 
   if (!isLoaded) return <p>Loading...</p>
   else return <Map location={location}></Map>
