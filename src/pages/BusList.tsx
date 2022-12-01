@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import BusInfoCard, { IBusInfoCard } from '../components/BusInfoCard'
+import BusMap from '../components/BusMap'
 import BusTile from '../components/BusTile'
 import { CardContextProvider } from '../contexts/BusCardContext'
 // import SearchBar from '../components/SearchBar'; reimport later
@@ -44,6 +45,8 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
   const [isCardOpen, setCardOpen] = useState<boolean>(false)
   const [activeBusCard, setActiveBusCard] = useState<IBusInfoCard>({ busName: '', busId: '', textColor: '', color: '', tripList: [] })
   const [tripList, setTripList] = useState<GtfsTripQuery>({});
+  const [location, setLocation] = useState<google.maps.LatLngLiteral>({ lat: 0, lng: 0 });
+
 
   // a bit scuffed to look at but this bypasses some CORS rules that give trouble during dev, copy this for any api calls
   // the extra api.allorigins.win is bypassed when in production
@@ -72,7 +75,6 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
         setFilteredRouteList(JSON.parse(data.contents))
       })
   }, [])
-
   // Fetching the trips (to get the bus names) here so that it is not done each time a bus card is fetched
   useEffect(() => {
     if (Object.keys(tripList).length !== 0) return
@@ -101,9 +103,10 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
   }, [])
 
   // temporary
+  // setting the current position
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      console.log(pos)
+    navigator.geolocation.getCurrentPosition((pos: GeolocationPosition) => {
+      setLocation({ ...location, lat: pos.coords.latitude, lng: pos.coords.longitude });
     })
   }, [])
 
@@ -133,8 +136,8 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
   return (
     <CardContextProvider value={{ isCardOpen, setCardOpen, activeBusCard, setActiveBusCard }}>
     <div className='overflow-hidden grow'>
-      <div className='w-full h-3/5 bg-slate-500 shadow-inner'>
-        Map goes here
+      <div className='w-full h-3/5 shadow-inner'>
+        <BusMap selectedBus={'none'} location={ location }></BusMap>
       </div>
       <div className="relative">
         <form
