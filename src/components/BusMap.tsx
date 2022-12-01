@@ -1,5 +1,5 @@
-import { useLoadScript, GoogleMap } from '@react-google-maps/api';
-import React, { useEffect } from 'react';
+import { useLoadScript, GoogleMap } from '@react-google-maps/api'
+import React, { useEffect } from 'react'
 
 // defining the component props
 interface Props {
@@ -97,26 +97,30 @@ const options: google.maps.MapOptions = {
   ],
 }
 
-const BusMap: React.FC<Props> = ({ location, onClick, onIdle }) => {
+const BusMap: React.FC<Props> = ({ location }) => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_MAPS_API_KEY ?? 'KEY_UNDEFINED',
-  });
-  /*
-  useEffect(() => {
-    if(BusMap) {
+  })
 
-    }
-  }, [onClick, onIdle])
-  */
+  const onClick = (e: google.maps.MapMouseEvent): void => {
+    console.log(e);
+  }
 
   if (!isLoaded) return <p>Loading...</p>
-  else return <Map location={location}></Map>
+  else return (<Map location={location} onClick={onClick}></Map>)
 }
 
-const Map: React.FC<MapProps> = ({ location }) => {
+const Map: React.FC<MapProps> = ({ location, onClick }) => {
   return (
-    <GoogleMap zoom={15} center={location} clickableIcons={false} options={options} mapContainerClassName="map-container"></GoogleMap>
+    <GoogleMap
+      zoom={15}
+      center={location}
+      clickableIcons={false}
+      options={options}
+      mapContainerClassName="map-container"
+      onClick={onClick}
+    ></GoogleMap>
   )
 }
 
-export default BusMap;
+export default BusMap
