@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
+import BusInfoCard, { IBusInfoCard } from '../components/BusInfoCard'
 import BusTile from '../components/BusTile'
+import { CardContextProvider } from '../contexts/BusCardContext'
 // import SearchBar from '../components/SearchBar'; reimport later
 interface Props {
   tempProp?: object
 }
 
-interface Bus {
+export interface Bus {
   route_color: string
   route_desc: string
   route_id: string
@@ -15,10 +17,23 @@ interface Bus {
   route_type: string
   route_url: string
 }
-
+export interface Trip {
+  route_id: string
+  service_id: string
+  trip_id: string
+  trip_headsign: string
+  direction_id: string
+  block_id: string
+  shape_id: string
+}
 interface GtfsQuery {
   Query?: object
   Gtfs?: Bus[]
+}
+
+interface GtfsTripQuery {
+  Query?: object
+  Gtfs?: Trip[]
 }
 
 const BusList: React.FC<Props> = ({ tempProp }) => {
@@ -26,6 +41,9 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
 
   const [routeList, setRouteList] = useState<GtfsQuery>({})
   const [filteredRouteList, setFilteredRouteList] = useState<GtfsQuery>({})
+  const [isCardOpen, setCardOpen] = useState<boolean>(false)
+  const [activeBusCard, setActiveBusCard] = useState<IBusInfoCard>({ busName: '', busId: '', textColor: '', color: '', tripList: [] })
+  const [tripList, setTripList] = useState<GtfsTripQuery>({});
 
   // a bit scuffed to look at but this bypasses some CORS rules that give trouble during dev, copy this for any api calls
   // the extra api.allorigins.win is bypassed when in production
@@ -55,6 +73,33 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
       })
   }, [])
 
+  // Fetching the trips (to get the bus names) here so that it is not done each time a bus card is fetched
+  useEffect(() => {
+    if (Object.keys(tripList).length !== 0) return
+
+    void fetch(`${
+      (process.env.NODE_ENV ?? 'development') === 'development'
+        ? 'https://api.allorigins.win/get?url='
+        : ''
+    }
+    ${encodeURIComponent(
+      `https://api.octranspo1.com/v2.0/Gtfs?${new URLSearchParams({
+        appID: process.env.REACT_APP_OC_APP_ID ?? 'KEY_NOT_FOUND',
+        apiKey: process.env.REACT_APP_OC_API_KEY ?? 'KEY_NOT_FOUND',
+        table: 'trips',
+        format: 'json',
+      }).toString()}`,
+    )}`)
+      .then(async (response) => {
+        if (response.ok) return await response.json()
+        throw new Error('Network response was not ok.')
+      })
+      .then((data) => {
+        setTripList(JSON.parse(data.contents))
+        console.log('finally getting results')
+      })
+  }, [])
+
   // temporary
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -70,6 +115,7 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
         busId={item.route_id}
         color={item.route_color}
         textColor={item.route_text_color}
+        tripList= {tripList.Gtfs as Trip[]}
       ></BusTile>
     )
   })
@@ -85,9 +131,10 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
   }
 
   return (
+    <CardContextProvider value={{ isCardOpen, setCardOpen, activeBusCard, setActiveBusCard }}>
     <div className='overflow-hidden grow'>
       <div className='w-full h-3/5 bg-slate-500 shadow-inner'>
-        the map will be here!
+        Map goes here
       </div>
       <div className="relative">
         <form
@@ -105,14 +152,16 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
       {/* TODO FIX THIS OML */}
       <div className="w-full pb-10 md:px-44 px-4">
         <div className="p-10 bg-slate-900 rounded-lg">
-          <div className="bg-slate-900 h-56 rounded-lg overflow-hidden overflow-y-scroll">
+        { isCardOpen && <BusInfoCard tripList={tripList.Gtfs as Trip[]} busId={activeBusCard.busId} busName={activeBusCard.busName} color={activeBusCard.color} textColor={activeBusCard.textColor} ></BusInfoCard>}
+        {!isCardOpen && (<div className="bg-slate-900 h-56 rounded-lg overflow-hidden overflow-y-scroll">
             <div className="grid md:grid-cols-5 grid-cols-1 grid-rows-min gap-2 p-4 h-fit">
               { busDisplayTemp }
             </div>
-          </div>
+          </div>)}
         </div>
       </div>
     </div>
+    </CardContextProvider>
   )
 }
 

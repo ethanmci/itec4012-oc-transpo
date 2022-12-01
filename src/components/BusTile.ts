@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useCardContext } from '../contexts/BusCardContext';
 // import BusInfoCard from './BusInfoCard';
+import { IBusInfoCard } from '../components/BusInfoCard'
 
 // defining the component props
-interface Props {
-  busName: string
-  busId: string
-  color: string
-  textColor: string
-}
 
 // this makes using this function MUCH cleaner
 const e = React.createElement;
 
-const BusTile: React.FC<Props> = ({ busName, color, textColor, busId }) => {
-  const [isCardOpen, setIsCardOpen] = useState(false);
-
+const BusTile: React.FC<IBusInfoCard> = ({ busName, color, textColor, busId, tripList }) => {
+  const cardContext = useCardContext();
   const openCard = (): void => {
-    setIsCardOpen(!isCardOpen);
-    console.log(`Click handled for: ${busName} ${busId}!`);
-    console.log(isCardOpen)
+    /* Add this code to allow switching between bus cards without closing them first
+    if (cardContext?.activeBusCard.busId === busId) {
+      cardContext?.setCardOpen(!cardContext?.isCardOpen)
+      return
+    } */
+    const newActiveBus: IBusInfoCard = { busName, color, textColor, busId, tripList }
+    cardContext?.setActiveBusCard(newActiveBus)
+    cardContext?.setCardOpen(true)
   }
 
   return e('div', {

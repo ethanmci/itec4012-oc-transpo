@@ -1,24 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useCardContext } from '../contexts/BusCardContext';
 import ToggleSwitch from './ToggleSwitch'
-import { useSelectedContext } from '../contexts/CardInfoContext'
+import { Trip } from '../pages/BusList'
 // defining the component props
-interface Props {
+export interface IBusInfoCard {
   busName: string // this is actually the bus number
   busId: string
   color: string
   textColor: string
-}
-// this makes using this function MUCH cleaner
-// const e = React.createElement;
-
-interface Trip {
-  route_id: string
-  service_id: string
-  trip_id: string
-  trip_headsign: string
-  direction_id: string
-  block_id: string
-  shape_id: string
+  tripList: Trip[]
 }
 
 interface BusName {
@@ -28,72 +18,69 @@ interface BusName {
   name: string
 }
 
-interface GtfsQuery {
-  Query?: object
-  Gtfs?: Trip[]
-}
-
-const BusCard: React.FC<Props> = ({ busName, color, textColor, busId }) => {
-  const { val, changeValue } = useSelectedContext();
-  // query trips and filter by ID, get name and direciton
+const BusInfoCard: React.FC<IBusInfoCard> = ({ busName, color, textColor, busId, tripList }) => {
   const [busTrips, setBusTrips] = useState<BusName[]>([]);
-  const [tripList, setTripList] = useState<GtfsQuery>({});
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [checked, setChecked] = useState(false);
+  const [directionName, setDirectionName] = useState('')
+  const cardContext = useCardContext()
 
   useEffect(() => {
-    if (Object.keys(tripList).length !== 0) return
-
-    void fetch(`${
-      (process.env.NODE_ENV ?? 'development') === 'development'
-        ? 'https://api.allorigins.win/get?url='
-        : ''
-    }
-    ${encodeURIComponent(
-      `https://api.octranspo1.com/v2.0/Gtfs?${new URLSearchParams({
-        appID: process.env.REACT_APP_OC_APP_ID ?? 'KEY_NOT_FOUND',
-        apiKey: process.env.REACT_APP_OC_API_KEY ?? 'KEY_NOT_FOUND',
-        table: 'trips',
-        format: 'json',
-      }).toString()}`,
-    )}`)
-      .then(async (response) => {
-        if (response.ok) return await response.json()
-        throw new Error('Network response was not ok.')
-      })
-      .then((data) => {
-        setTripList(JSON.parse(data.contents))
-      })
-  }, [])
-
-  useEffect(() => {
-    tripList.Gtfs?.forEach((item) => {
-      // const test: BusName = { direction: '', name: '', id: '', number: '' };
+    busTrips.length = 0
+    if (tripList === undefined) return
+    tripList.every((item) => {
       if (item.route_id === busId) {
         const newName: BusName = { direction: item.direction_id, name: item.trip_headsign, number: busName, id: busId }
-        busTrips.push(newName)
+        if (busTrips.length === 0) {
+          busTrips.push(newName)
+        } else {
+          if (item.direction_id !== busTrips[0].direction) {
+            busTrips.push(newName)
+            return false
+          }
+        }
       }
-    });
-    if (busTrips.length > 1) {
-      setBusTrips([busTrips[0], busTrips[busTrips.length - 1]])
-    }
-  }, [tripList])
+      return true
+    })
+    setBusTrips(busTrips)
+    setDirectionName(displayBusName())
+    setChecked(false)
+  }, [cardContext?.activeBusCard])
 
   useEffect(() => {
-    console.log('checked = ' + checked.toString());
-    // No idea why this doesn't work
-    if (changeValue !== undefined) changeValue(!val)
-    console.log('Context checked value = ' + val.toString())
+    setDirectionName(displayBusName())
+    // Do other things that would change when the bus directions changes
   }, [checked])
+
+  const displayBusName = (): string => {
+    if (busTrips.length === 0) return ''
+    if (checked) {
+      return busTrips[0].name
+    } else {
+      return busTrips[1].name
+    }
+  }
+
+  const closeCard = (): void => {
+    cardContext?.setCardOpen(false)
+  }
+
   return (
-    <div>
-      <div style={{ backgroundColor: `#${color}`, color: `#${textColor}` }} className='p-5 rounded-md h-16 hover:border-2 hover:border-white relative transition ease-in-out delay-75 flex justify-between'>
-        <p className='text-l p-5'>{ busTrips.length !== 0 ? checked ? busTrips[0].number : busTrips[1].number : null}</p>
-        <p className='text-l p-5'>{ busTrips.length !== 0 ? checked ? busTrips[0].name : busTrips[1].name : null}</p>
-        {<ToggleSwitch checked={checked} onChange={ setChecked }/>}
+    <div style={{ backgroundColor: `#${color}`, color: `#${textColor}` }} className='flex-col rounded-md justify-between'>
+      <div className='py-5 mx-auto relative transition ease-in-out delay-75 flex justify-around'>
+          <p className='text-l'>{ busName }</p>
+          <p className='text-l'>{ directionName }</p>
+          {<ToggleSwitch checked={checked} onChange={ setChecked }/>}
+          <button
+            onClick={closeCard}
+            style={{ backgroundColor: `#${textColor}`, color: `#${color}` }}
+            className='hover:bg-grey-100 font-bold rounded-full px-5'> X
+          </button>
       </div>
+      <div className='p-5'>
+        Information about the Busses goes here
+        </div>
     </div>
   );
 }
 
-export default BusCard;
+export default BusInfoCard;
