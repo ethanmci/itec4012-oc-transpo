@@ -9,6 +9,15 @@ interface Props {
   stops?: Stop[]
 }
 
+/*
+interface MapProps extends google.maps.MapOptions {
+  location: google.maps.LatLngLiteral
+  onClick?: (e: google.maps.MapMouseEvent) => void
+  onIdle?: (map: google.maps.Map) => void
+  rangeCircle?: any
+}
+*/
+
 const options: google.maps.MapOptions = {
   disableDefaultUI: true,
   styles: [
