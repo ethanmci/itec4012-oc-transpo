@@ -3,21 +3,12 @@ import BusInfoCard, { IBusInfoCard } from '../components/BusInfoCard'
 import BusMap from '../components/BusMap'
 import BusTile from '../components/BusTile'
 import { CardContextProvider } from '../contexts/BusCardContext'
+import { Bus } from '../interfaces'
 // import SearchBar from '../components/SearchBar'; reimport later
 interface Props {
   tempProp?: object
 }
 
-export interface Bus {
-  route_color: string
-  route_desc: string
-  route_id: string
-  route_long_name: string
-  route_short_name: string
-  route_text_color: string
-  route_type: string
-  route_url: string
-}
 export interface Trip {
   route_id: string
   service_id: string
@@ -27,7 +18,8 @@ export interface Trip {
   block_id: string
   shape_id: string
 }
-interface GtfsQuery {
+
+interface GtfsBusQuery {
   Query?: object
   Gtfs?: Bus[]
 }
@@ -39,14 +31,12 @@ interface GtfsTripQuery {
 
 const BusList: React.FC<Props> = ({ tempProp }) => {
   // const radius: number = 8;
-
-  const [routeList, setRouteList] = useState<GtfsQuery>({})
-  const [filteredRouteList, setFilteredRouteList] = useState<GtfsQuery>({})
+  const [routeList, setRouteList] = useState<GtfsBusQuery>({})
+  const [filteredRouteList, setFilteredRouteList] = useState<GtfsBusQuery>({})
   const [isCardOpen, setCardOpen] = useState<boolean>(false)
   const [activeBusCard, setActiveBusCard] = useState<IBusInfoCard>({ busName: '', busId: '', textColor: '', color: '', tripList: [] })
   const [tripList, setTripList] = useState<GtfsTripQuery>({});
   const [location, setLocation] = useState<google.maps.LatLngLiteral>({ lat: 0, lng: 0 });
-
 
   // a bit scuffed to look at but this bypasses some CORS rules that give trouble during dev, copy this for any api calls
   // the extra api.allorigins.win is bypassed when in production

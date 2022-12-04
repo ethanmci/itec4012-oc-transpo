@@ -1,16 +1,12 @@
-import { useLoadScript, GoogleMap } from '@react-google-maps/api'
-import React, { useEffect } from 'react'
+import { useLoadScript, GoogleMap, MarkerF, CircleF, DirectionsRenderer } from '@react-google-maps/api'
+import React, { useCallback, useRef } from 'react'
+import { Stop } from '../interfaces';
 
 // defining the component props
 interface Props {
-  selectedBus: String
   location: google.maps.LatLngLiteral
-}
-
-interface MapProps extends google.maps.MapOptions {
-  location: google.maps.LatLngLiteral
-  onClick?: (e: google.maps.MapMouseEvent) => void
-  onIdle?: (map: google.maps.Map) => void
+  selectedBus?: String
+  stops?: Stop[]
 }
 
 const options: google.maps.MapOptions = {
@@ -97,20 +93,22 @@ const options: google.maps.MapOptions = {
   ],
 }
 
-const BusMap: React.FC<Props> = ({ location }) => {
+const radius: number = 500; // measured in meters
+
+// TODO: Move location to a context variable?
+const BusMap: React.FC<Props> = ({ location, selectedBus }) => {
+  const mapRef = useRef<GoogleMap>();
+  const onLoad = useCallback((map: any) => (mapRef.current = map), []);
+
+  const onMarkerLoad = (marker: any): void => {
+    console.log(marker);
+  }
+
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_MAPS_API_KEY ?? 'KEY_UNDEFINED',
   })
 
-  const onClick = (e: google.maps.MapMouseEvent): void => {
-    console.log(e);
-  }
-
   if (!isLoaded) return <p>Loading...</p>
-  else return (<Map location={location} onClick={onClick}></Map>)
-}
-
-const Map: React.FC<MapProps> = ({ location, onClick }) => {
   return (
     <GoogleMap
       zoom={15}
@@ -118,8 +116,12 @@ const Map: React.FC<MapProps> = ({ location, onClick }) => {
       clickableIcons={false}
       options={options}
       mapContainerClassName="map-container"
-      onClick={onClick}
-    ></GoogleMap>
+      onLoad={onLoad}
+    >
+      <MarkerF position={location} onLoad={onMarkerLoad}></MarkerF>
+      <CircleF center={location} radius={radius}></CircleF>
+      <DirectionsRenderer></DirectionsRenderer>
+    </GoogleMap>
   )
 }
 

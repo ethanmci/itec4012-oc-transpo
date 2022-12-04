@@ -1,0 +1,27 @@
+// TODO: move non-one-off interfaces here!
+export interface Stop {
+  id: string
+  stop_id: string
+  stop_code: string
+  stop_name: string
+  stop_desc: string
+  stop_lat: string
+  stop_lon: string
+  stop_street: string
+  stop_city: string
+  stop_region: string
+  stop_postcode: string
+  stop_country: string
+  zone_id: string
+}
+
+interface Bus {
+  route_color: string
+  route_desc: string
+  route_id: string
+  route_long_name: string
+  route_short_name: string
+  route_text_color: string
+  route_type: string
+  route_url: string
+}
