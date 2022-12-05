@@ -5,9 +5,6 @@ import BusTile from '../components/BusTile'
 import { CardContextProvider } from '../contexts/BusCardContext'
 import { Bus } from '../interfaces'
 // import SearchBar from '../components/SearchBar'; reimport later
-interface Props {
-  tempProp?: object
-}
 
 export interface Trip {
   route_id: string
@@ -29,14 +26,23 @@ interface GtfsTripQuery {
   Gtfs?: Trip[]
 }
 
-const BusList: React.FC<Props> = ({ tempProp }) => {
+const BusList: React.FC = () => {
   // const radius: number = 8;
   const [routeList, setRouteList] = useState<GtfsBusQuery>({})
   const [filteredRouteList, setFilteredRouteList] = useState<GtfsBusQuery>({})
   const [isCardOpen, setCardOpen] = useState<boolean>(false)
-  const [activeBusCard, setActiveBusCard] = useState<IBusInfoCard>({ busName: '', busId: '', textColor: '', color: '', tripList: [] })
-  const [tripList, setTripList] = useState<GtfsTripQuery>({});
-  const [location, setLocation] = useState<google.maps.LatLngLiteral>({ lat: 0, lng: 0 });
+  const [activeBusCard, setActiveBusCard] = useState<IBusInfoCard>({
+    busName: '',
+    busId: '',
+    textColor: '',
+    color: '',
+    tripList: [],
+  })
+  const [tripList, setTripList] = useState<GtfsTripQuery>({})
+  const [location, setLocation] = useState<google.maps.LatLngLiteral>({
+    lat: 0,
+    lng: 0,
+  })
 
   // a bit scuffed to look at but this bypasses some CORS rules that give trouble during dev, copy this for any api calls
   // the extra api.allorigins.win is bypassed when in production
@@ -65,6 +71,7 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
         setFilteredRouteList(JSON.parse(data.contents))
       })
   }, [])
+
   // Fetching the trips (to get the bus names) here so that it is not done each time a bus card is fetched
   useEffect(() => {
     if (Object.keys(tripList).length !== 0) return
@@ -96,7 +103,11 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
   // setting the current position
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((pos: GeolocationPosition) => {
-      setLocation({ ...location, lat: pos.coords.latitude, lng: pos.coords.longitude });
+      setLocation({
+        ...location,
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+      })
     })
   }, [])
 
@@ -108,13 +119,12 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
         busId={item.route_id}
         color={item.route_color}
         textColor={item.route_text_color}
-        tripList= {tripList.Gtfs as Trip[]}
+        tripList={tripList.Gtfs as Trip[]}
       ></BusTile>
     )
   })
 
   const filterBuses = (input: React.ChangeEvent<HTMLInputElement>): void => {
-    console.log(input.target.value)
     const inputValue = input.target.value.trim()
     const returnArr: Bus[] = []
     routeList.Gtfs?.forEach((e) => {
@@ -124,38 +134,54 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
   }
 
   return (
-    <CardContextProvider value={{ isCardOpen, setCardOpen, activeBusCard, setActiveBusCard }}>
-    <div className='overflow-hidden grow'>
-      <div className='w-full h-3/5 shadow-inner'>
-        <BusMap selectedBus={'none'} location={ location }></BusMap>
-      </div>
-      <div className="relative">
-        <form
-          className="absolute w-2/3 flex grow items-start gap-1 z-50 inset-x-1/2"
-          style={{ transform: 'translate(-50%, -50%)' }}
-        >
-          <input
-            onChange={(e) => filterBuses(e)}
-            className="flex-auto h-14 p-2 border-solid border-2 text-xl border-slate-600 rounded-md shadow-md"
-            type="text"
-            name="bus-search"
+    <CardContextProvider
+      value={{ isCardOpen, setCardOpen, activeBusCard, setActiveBusCard }}
+    >
+      <div className="overflow-hidden grow">
+        <div className="w-full h-3/5 shadow-inner">
+          <BusMap
+            busSelected={isCardOpen}
+            selectedBus={activeBusCard.busId}
+            location={location}
+            trips={tripList.Gtfs}
           />
-        </form>
-      </div>
-      {/* TODO FIX THIS OML */}
-      <div className="w-full pb-10 md:px-44 px-4">
-        <div className="p-10 bg-slate-900 rounded-lg">
-        { isCardOpen && <BusInfoCard tripList={tripList.Gtfs as Trip[]} busId={activeBusCard.busId} busName={activeBusCard.busName} color={activeBusCard.color} textColor={activeBusCard.textColor} ></BusInfoCard>}
-        {!isCardOpen && (<div className="bg-slate-900 h-56 rounded-lg overflow-hidden overflow-y-scroll">
-            <div className="grid md:grid-cols-5 grid-cols-1 grid-rows-min gap-2 p-4 h-fit">
-              { busDisplayTemp }
-            </div>
-          </div>)}
+        </div>
+        <div className="relative">
+          <form
+            className="absolute w-2/3 flex grow items-start gap-1 z-50 inset-x-1/2"
+            style={{ transform: 'translate(-50%, -50%)' }}
+          >
+            <input
+              onChange={(e) => filterBuses(e)}
+              className="flex-auto h-14 p-2 border-solid border-2 text-xl border-slate-600 rounded-md shadow-md"
+              type="text"
+              name="bus-search"
+            />
+          </form>
+        </div>
+        <div className="w-full pb-10 md:px-44 px-4">
+          <div className="p-10 bg-slate-900 rounded-lg">
+            {isCardOpen && (
+              <BusInfoCard
+                tripList={tripList.Gtfs as Trip[]}
+                busId={activeBusCard.busId}
+                busName={activeBusCard.busName}
+                color={activeBusCard.color}
+                textColor={activeBusCard.textColor}
+              ></BusInfoCard>
+            )}
+            {!isCardOpen && (
+              <div className="bg-slate-900 h-56 rounded-lg overflow-hidden overflow-y-scroll">
+                <div className="grid md:grid-cols-5 grid-cols-1 grid-rows-min gap-2 p-4 h-fit">
+                  {busDisplayTemp}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </CardContextProvider>
   )
 }
 
-export default BusList;
+export default BusList
