@@ -99,7 +99,6 @@ const BusList: React.FC = () => {
       })
   }, [])
 
-  // temporary
   // setting the current position
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((pos: GeolocationPosition) => {

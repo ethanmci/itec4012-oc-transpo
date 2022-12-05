@@ -118,6 +118,7 @@ const BusMap: React.FC<Props> = ({ location, busSelected, selectedBus, stops, tr
         tempFilteredTrips.push(e);
       }
     });
+    console.log(tempFilteredTrips)
     setFilteredTrips([...tempFilteredTrips])
   }, [trips])
 
