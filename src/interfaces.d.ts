@@ -15,7 +15,7 @@ export interface Stop {
   zone_id: string
 }
 
-interface Bus {
+export interface Bus {
   route_color: string
   route_desc: string
   route_id: string
@@ -24,4 +24,23 @@ interface Bus {
   route_text_color: string
   route_type: string
   route_url: string
+}
+
+export interface Trip {
+  route_id: string
+  service_id: string
+  trip_id: string
+  trip_headsign: string
+  direction_id: string
+  block_id: string
+  shape_id: string
+}
+
+export interface GtfsStopQuery {
+  Query?: object
+  Gtfs?: Stop[]
+}
+export interface GtfsTripQuery {
+  Query?: object
+  Gtfs?: Trip[]
 }

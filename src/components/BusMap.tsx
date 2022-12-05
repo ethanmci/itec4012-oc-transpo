@@ -1,12 +1,14 @@
 import { useLoadScript, GoogleMap, MarkerF, CircleF, DirectionsRenderer } from '@react-google-maps/api'
-import React, { useCallback, useRef } from 'react'
-import { Stop } from '../interfaces';
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Stop, Trip } from '../interfaces';
 
 // defining the component props
 interface Props {
   location: google.maps.LatLngLiteral
+  busSelected?: boolean
   selectedBus?: String
   stops?: Stop[]
+  trips?: Trip[]
 }
 
 const options: google.maps.MapOptions = {
@@ -96,9 +98,28 @@ const options: google.maps.MapOptions = {
 const radius: number = 500; // measured in meters
 
 // TODO: Move location to a context variable?
-const BusMap: React.FC<Props> = ({ location, selectedBus }) => {
+const BusMap: React.FC<Props> = ({ location, busSelected, selectedBus, stops, trips }) => {
+  const [filteredTrips, setFilteredTrips] = useState<Trip[]>([])
+  // console.log(busSelected)
+  console.log(selectedBus)
+  // const [busRouteData, setBusRouteData] = useState({})
   const mapRef = useRef<GoogleMap>();
   const onLoad = useCallback((map: any) => (mapRef.current = map), []);
+
+  useEffect(() => {
+
+  }, [selectedBus])
+
+  useEffect(() => {
+    if (!(busSelected ?? false)) return;
+    const tempFilteredTrips: Trip[] = []
+    trips?.forEach(e => {
+      if (e.route_id === selectedBus) {
+        tempFilteredTrips.push(e);
+      }
+    });
+    setFilteredTrips([...tempFilteredTrips])
+  }, [trips])
 
   const onMarkerLoad = (marker: any): void => {
     console.log(marker);
@@ -120,7 +141,8 @@ const BusMap: React.FC<Props> = ({ location, selectedBus }) => {
     >
       <MarkerF position={location} onLoad={onMarkerLoad}></MarkerF>
       <CircleF center={location} radius={radius}></CircleF>
-      <DirectionsRenderer></DirectionsRenderer>
+      { stops !== undefined && <MarkerF position={location} onLoad={onMarkerLoad}></MarkerF> }
+      { (busSelected ?? false) && <DirectionsRenderer></DirectionsRenderer> }
     </GoogleMap>
   )
 }
