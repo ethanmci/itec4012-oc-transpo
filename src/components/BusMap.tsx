@@ -118,9 +118,9 @@ const BusMap: React.FC<Props> = ({ location, busSelected, selectedBus, stops, tr
         tempFilteredTrips.push(e);
       }
     });
-    console.log(tempFilteredTrips)
+    console.log(filteredTrips)
     setFilteredTrips([...tempFilteredTrips])
-  }, [trips])
+  }, [trips, selectedBus])
 
   const onMarkerLoad = (marker: any): void => {
     console.log(marker);
