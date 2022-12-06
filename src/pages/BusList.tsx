@@ -49,26 +49,27 @@ const BusList: React.FC = () => {
   useEffect(() => {
     if (Object.keys(routeList).length !== 0) return
 
-    void fetch(`${
-      (process.env.NODE_ENV ?? 'development') === 'development'
-        ? 'https://api.allorigins.win/get?url='
-        : ''
-    }
-    ${encodeURIComponent(
-      `https://api.octranspo1.com/v2.0/Gtfs?${new URLSearchParams({
-        appID: process.env.REACT_APP_OC_APP_ID ?? 'KEY_NOT_FOUND',
-        apiKey: process.env.REACT_APP_OC_API_KEY ?? 'KEY_NOT_FOUND',
-        table: 'routes',
-        format: 'json',
-      }).toString()}`,
-    )}`)
+    void fetch(
+      `${
+        (process.env.NODE_ENV ?? 'development') === 'development'
+          ? 'https://damp-falls-69769.herokuapp.com/'
+          : ''
+      }${encodeURI(
+        `https://api.octranspo1.com/v2.0/Gtfs?${new URLSearchParams({
+          appID: process.env.REACT_APP_OC_APP_ID ?? 'KEY_NOT_FOUND',
+          apiKey: process.env.REACT_APP_OC_API_KEY ?? 'KEY_NOT_FOUND',
+          table: 'routes',
+          format: 'json',
+        }).toString()}`,
+      )}`,
+    )
       .then(async (response) => {
         if (response.ok) return await response.json()
         throw new Error('Network response was not ok.')
       })
       .then((data) => {
-        setRouteList(JSON.parse(data.contents))
-        setFilteredRouteList(JSON.parse(data.contents))
+        setRouteList(JSON.parse(JSON.stringify(data)))
+        setFilteredRouteList(JSON.parse(JSON.stringify(data)))
       })
   }, [])
 
@@ -78,10 +79,9 @@ const BusList: React.FC = () => {
 
     void fetch(`${
       (process.env.NODE_ENV ?? 'development') === 'development'
-        ? 'https://api.allorigins.win/get?url='
+        ? 'https://damp-falls-69769.herokuapp.com/'
         : ''
-    }
-    ${encodeURIComponent(
+    }${encodeURI(
       `https://api.octranspo1.com/v2.0/Gtfs?${new URLSearchParams({
         appID: process.env.REACT_APP_OC_APP_ID ?? 'KEY_NOT_FOUND',
         apiKey: process.env.REACT_APP_OC_API_KEY ?? 'KEY_NOT_FOUND',
@@ -94,7 +94,7 @@ const BusList: React.FC = () => {
         throw new Error('Network response was not ok.')
       })
       .then((data) => {
-        setTripList(JSON.parse(data.contents))
+        setTripList(JSON.parse(JSON.stringify(data)))
         console.log('finally getting results')
       })
   }, [])
