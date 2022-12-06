@@ -16,8 +16,7 @@ const StopInfo: React.FC<Props> = ({ stopName, color, textColor }) => {
     onClick: () => console.log(`Click handled for: ${stopName}!`),
     className: 'p-5 rounded-sm hover:border-2 h-14 shadow-sm relative transition-opacity duration-75',
     style: { backgroundColor: `#${color}`, color: `#${textColor}` },
-  }, e('p', { className: 'text-center text-xl' }, stopName),
-     e('p', { className: 'text-center text-xl' }));
+  }, e('button', { className: 'text-center text-xl' }, stopName))
 }
 
 export default StopInfo;

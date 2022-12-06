@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import StopInfo from '../components/StopInfo'
+import RoutesCards from '../components/RoutesCard'
 
 interface Stop {
   id: string
@@ -23,12 +24,12 @@ interface GtfsStopQuery {
 }
 
 interface Route {
-  id: String
-  route_id: String
-  route_short_name: String
-  route_long_name: String
-  route_desc: String
-  route_type: String
+  id: string
+  route_id: string
+  route_short_name: string
+  route_long_name: string
+  route_desc: string
+  route_type: string
 }
 
 interface GtfsRouteQuery {
@@ -131,18 +132,23 @@ const Home: React.FC = () => {
     return false;
   }
 
-  const getStopsNearby = (): void => {
-    const returnArr: Stop[] = []
-    stopList.Gtfs?.forEach((e) => {
-      const lat: number = parseFloat(e.stop_lat)
-      const lon: number = parseFloat(e.stop_lon)
-      if (withinRange(location.lat, lat, location.lng, lon)) {
-        returnArr.push(e)
-        getRoutes()
-      }
-    })
-    setFilteredStopList({ ...setFilteredStopList, Gtfs: [...returnArr] })
-  }
+  useEffect(() => {
+    const getStops = (): void => {
+      const returnArr: Stop[] = []
+      stopList.Gtfs?.forEach((e) => {
+        const lat: number = parseFloat(e.stop_lat)
+        const lon: number = parseFloat(e.stop_lon)
+        if (withinRange(location.lat, lat, location.lng, lon)) {
+          returnArr.push(e)
+          // getRoutes()
+        }
+      })
+      setFilteredStopList({ ...setFilteredStopList, Gtfs: [...returnArr] })
+    }
+    setTimeout(() => {
+      getStops();
+    }, 30000);
+  }, [filteredStopList, location.lat, location.lng]);
 
   const getRoutes = (): void => {
     const returnArr: Route[] = []
@@ -165,30 +171,22 @@ const Home: React.FC = () => {
 
   const routesDisplayTemp = filteredRouteList.Gtfs?.map((item, index) => {
     return (
-      <StopInfo
+      <RoutesCards
         key={index}
-        stopName={item.stop_name}
+        routeName={item.route_long_name}
+        routeID={item.route_id}
         color={'00000'}
         textColor={'black'}
-      ></StopInfo>
+      ></RoutesCards>
     )
   })
 
-  const simpleLocationDisplay = (): void => {
-    return (
-      console.log(location.lat, location.lng)
-    )
-  }
-
   return (
-    <div>Home page!<br></br>
-      <button onClick={getStopsNearby}>Stops in range</button>
-      <br></br>
-      <button onClick={simpleLocationDisplay}>Current Lat</button>
-      <div className='inline-block mx-auto'>List of Stops:
-        <div className='border-2 border-red-500 rounded-lg align-center'>{stopDisplayTemp}</div>
+      <div>Home page!<br></br>
+        <div className='inline-block mx-auto'>List of Stops:
+          <div className='border-2 border-red-500 rounded-lg align-center'>{stopDisplayTemp}</div>
+        </div>
       </div>
-    </div>
   )
 };
 

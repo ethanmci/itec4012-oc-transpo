@@ -3,7 +3,8 @@ import React from 'react';
 
 // defining the component props
 interface Props {
-  stopName: string
+  routeID: string
+  routeName: string
   color: string
   textColor: string
 }
@@ -11,13 +12,12 @@ interface Props {
 // this makes using this function MUCH cleaner
 const e = React.createElement;
 
-const StopInfo: React.FC<Props> = ({ stopName, color, textColor }) => {
+const RouteInfo: React.FC<Props> = ({ routeID, routeName, color, textColor }) => {
   return e('div', {
-    onClick: () => console.log(`Click handled for: ${stopName}!`),
+    onClick: () => getRoutes,
     className: 'p-5 rounded-sm hover:border-2 h-14 shadow-sm relative transition-opacity duration-75',
     style: { backgroundColor: `#${color}`, color: `#${textColor}` },
-  }, e('p', { className: 'text-center text-xl' }, stopName),
-     e('p', { className: 'text-center text-xl' }));
+  }, e('p', { className: 'text-center text-xl' }, routeName + routeID))
 }
 
-export default StopInfo;
+export default RouteInfo;
