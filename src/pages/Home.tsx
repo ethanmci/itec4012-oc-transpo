@@ -258,17 +258,33 @@ const Home: React.FC = () => {
     )
   })
 
-  const routesDisplay = activeStopRoutes?.map((item, index) => {
-    console.log(activeStopRoutes)
-    return (
-         <RouteInfoCard
-          key={index}
-          busName={item.RouteHeading}
-          busNumber={item.RouteNo}
-          color='DA291C'
-          textColor='FFFFFF'
-          trips={ activeStopRoutes?.[0].Trips }></RouteInfoCard>
-    )
+  // Fine to make this O(n2) because this will only ever be used for arrays of size 3 (returned from API call)
+  const getMultiDirectionNames = (routeNo: string): string[] => {
+    const foundItems: string[] = []
+    activeStopRoutes?.forEach((item) => {
+      if (item.RouteNo === routeNo) foundItems.push(item.RouteHeading)
+      if (foundItems.length === 2) return foundItems
+    })
+    return foundItems
+  }
+
+  const routesDisplay = activeStopRoutes?.map((item) => {
+    if (item.Trips === undefined) return null
+    console.log(item.Trips)
+    const retVal: any = [];
+    let index = 0
+    item.Trips?.Trip.forEach((trip) => {
+      retVal.push(
+        <RouteInfoCard
+         key={index++}
+         busName={ getMultiDirectionNames(item.RouteNo)} // checks if both directions go to this stop and if so allows toggling
+         busNumber={item.RouteNo}
+         color='DA291C'
+         textColor='FFFFFF'
+         multiDirection={true}
+         stopTime={ trip.TripStartTime }></RouteInfoCard>)
+    })
+    return retVal
   })
   /*
   // commented out for now

@@ -51,7 +51,7 @@ export interface Route {
   RouteHeading: string
   DirectionID: number
   Direction: string
-  Trips: TimedTrip[]
+  Trips: { Trip: TimedTrip[] }
 }
 
 // Routes and Trips from GetRouteSummaryForStopResult API call aren't consistent with GTFS
