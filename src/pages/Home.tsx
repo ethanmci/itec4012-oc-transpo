@@ -186,10 +186,8 @@ const Home: React.FC = () => {
         console.log(routeData)
         if (Array.isArray(routeData)) {
           setActiveStopRoutes(routeData)
-          console.log('isArray')
         } else {
           setActiveStopRoutes([routeData])
-          console.log('is NOT Array')
         }
       })
   }, [selectedStop])
@@ -273,17 +271,31 @@ const Home: React.FC = () => {
     console.log(item.Trips)
     const retVal: any = [];
     let index = 0
-    item.Trips?.Trip.forEach((trip) => {
-      retVal.push(
-        <RouteInfoCard
-         key={index++}
-         busName={ getMultiDirectionNames(item.RouteNo)} // checks if both directions go to this stop and if so allows toggling
-         busNumber={item.RouteNo}
-         color='DA291C'
-         textColor='FFFFFF'
-         multiDirection={true}
-         stopTime={ trip.TripStartTime }></RouteInfoCard>)
-    })
+    if (Array.isArray(item.Trips)) {
+      item.Trips.forEach((trip) => {
+        retVal.push(
+          <RouteInfoCard
+           key={index++}
+           busName={ getMultiDirectionNames(item.RouteNo)} // checks if both directions go to this stop and if so allows toggling
+           busNumber={item.RouteNo}
+           color='DA291C'
+           textColor='FFFFFF'
+           multiDirection={true}
+           stopTime={ trip.TripStartTime }></RouteInfoCard>)
+      })
+    } else {
+      item.Trips?.Trip.forEach((trip) => {
+        retVal.push(
+          <RouteInfoCard
+           key={index++}
+           busName={ getMultiDirectionNames(item.RouteNo)} // checks if both directions go to this stop and if so allows toggling
+           busNumber={item.RouteNo}
+           color='DA291C'
+           textColor='FFFFFF'
+           multiDirection={true}
+           stopTime={ trip.TripStartTime }></RouteInfoCard>)
+      })
+    }
     return retVal
   })
   /*
@@ -318,7 +330,7 @@ const Home: React.FC = () => {
           <div className="flex-auto h-14 p-2 border-solid border-2 text-xl bg-slate-100 align-middle rounded-md shadow-md">
             <div className='flex justify-between'>
               <h2 className='px-5'>{isStopSelected && selectedStop?.stop_name }</h2>
-              <h2 className='px-5'>{isStopSelected && selectedStop?.stop_id }</h2>
+              <h2 className='px-5'>{isStopSelected && selectedStop?.stop_code }</h2>
             </div>
           </div>
           {isStopSelected &&
