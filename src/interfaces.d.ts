@@ -36,13 +36,35 @@ export interface Trip {
   shape_id: string
 }
 
-export interface Route {
+export interface GTFSRoute {
   id: string
   route_id: string
   route_short_name: string
   route_long_name: string
   route_desc: string
   route_type: string
+}
+
+// Routes and Trips from GetRouteSummaryForStopResult API call aren't consistent with GTFS
+export interface Route {
+  RouteNo: string
+  RouteHeading: string
+  DirectionID: number
+  Direction: string
+  Trips: { Trip: TimedTrip[] } | TimedTrip[]
+}
+
+// Routes and Trips from GetRouteSummaryForStopResult API call aren't consistent with GTFS
+export interface TimedTrip {
+  Longitude: string
+  Latitude: string
+  GPSSpeed: string
+  TripDestination: string
+  TripStartTime: string
+  AdjustedScheduleTime: string
+  AdjustmentAge: string
+  LastTripOfSchedule: boolean
+  BusType: string
 }
 
 export interface GtfsStopQuery {
@@ -57,4 +79,9 @@ export interface GtfsTripQuery {
 export interface GtfsRouteQuery {
   Query?: object
   Gtfs?: Route[]
+}
+
+export interface GtfsBusQuery {
+  Query?: object
+  Gtfs?: Bus[]
 }

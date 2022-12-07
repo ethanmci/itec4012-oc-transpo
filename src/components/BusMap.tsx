@@ -64,6 +64,7 @@ const BusMap: React.FC<Props> = ({
     googleMapsApiKey: process.env.REACT_APP_MAPS_API_KEY ?? 'KEY_UNDEFINED',
   })
 
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!isLoaded) return <p>Loading...</p>
   return (
     <GoogleMap

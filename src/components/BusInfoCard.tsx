@@ -69,7 +69,7 @@ const BusInfoCard: React.FC<IBusInfoCard> = ({ busName, color, textColor, busId,
       <div className='py-5 mx-auto relative transition ease-in-out delay-75 flex justify-around'>
           <p className='text-l'>{ busName }</p>
           <p className='text-l'>{ directionName }</p>
-          {<ToggleSwitch checked={checked} onChange={ setChecked }/>}
+          {<ToggleSwitch enabled={true} checked={checked} onChange={ setChecked }/>}
           <button
             onClick={closeCard}
             style={{ backgroundColor: `#${textColor}`, color: `#${color}` }}
