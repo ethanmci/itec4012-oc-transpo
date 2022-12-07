@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import StopInfo from '../components/StopInfo'
 import RouteInfoCard from '../components/RouteCard'
 import BusMap from '../components/BusMap';
-import { Route, Trip, Stop, GtfsStopQuery, GtfsRouteQuery } from '../interfaces';
+import { Route, Trip, Stop, GtfsStopQuery, GtfsBusQuery } from '../interfaces';
 // import StopInfoCard, { IStopInfoCard } from '../components/StopInfoCard'
 // import { StopContextProvider } from '../contexts/StopCardContext';
 /*
@@ -43,20 +42,13 @@ const Home: React.FC = () => {
   const [location, setLocation] = useState<google.maps.LatLngLiteral>({ lat: 0, lng: 0 });
   const [stopList, setStopList] = useState<GtfsStopQuery>({});
   const [filteredStopList, setFilteredStopList] = useState<GtfsStopQuery>({});
-  const [routeList, setRouteList] = useState<GtfsRouteQuery>({});
+  const [routeList, setRouteList] = useState<GtfsBusQuery>({});
   const [selectedStop, setSelectedStop] = useState<Stop>();
   const [isStopSelected, setIsStopSelected] = useState<boolean>(false)
   const [tripList, setTripList] = useState<GtfsTripQuery>({})
   const [activeStopRoutes, setActiveStopRoutes] = useState<Route[]>()
   // const [filteredRouteList, setFilteredRouteList] = useState<GtfsRouteQuery>({});
   // const [inboundTrip, setInboundTrip] = useState<GtfsTripQuery>({});
-  /* const [isStopCardOpen, setStopCardOpen] = useState<boolean>(false)
-  const [activeStopCard, setActiveStopCard] = useState<IStopInfoCard>({
-    stopName: '',
-    textColor: '',
-    color: '',
-  }) */
-  // isStopCardOpen, setStopCardOpen, activeStopCard, setActiveStopCard
 
   const updateLocation = (): void => {
     navigator.geolocation.getCurrentPosition((pos: GeolocationPosition) => {
@@ -234,28 +226,6 @@ const Home: React.FC = () => {
     return Math.hypot(loc2.lat - loc1.lat, loc2.lng - loc1.lng)
   }
 
-  /*
-  const getRoutes = (): void => {
-    const returnArr: Route[] = []
-    routeList.Gtfs?.forEach((e) => {
-      returnArr.push(e)
-    })
-    setFilteredRouteList({ ...setFilteredRouteList, Gtfs: [...returnArr] })
-  }
-  */
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const stopDisplayTemp = filteredStopList.Gtfs?.map((item, index) => {
-    return (
-      <StopInfo
-        key={index}
-        stopName={item.stop_name}
-        color={'DA291C'}
-        textColor={'FFFFFF'}
-      ></StopInfo>
-    )
-  })
-
   // Fine to make this O(n2) because this will only ever be used for arrays of size 3 (returned from API call)
   const getMultiDirectionNames = (routeNo: string): string[] => {
     const foundItems: string[] = []
@@ -267,6 +237,18 @@ const Home: React.FC = () => {
   }
 
   const routesDisplay = activeStopRoutes?.map((item) => {
+    console.log(routeList)
+    // getting colours
+    let routeColour = 'DA291C' // defualt red
+    let textColor = 'FFFFFF' // default black
+    routeList.Gtfs?.every((route) => {
+      if (route.route_short_name === item.RouteNo) {
+        routeColour = route.route_color
+        textColor = route.route_text_color
+        return true
+      }
+      return true
+    })
     if (item.Trips === undefined) return null
     console.log(item.Trips)
     const retVal: any = [];
@@ -278,9 +260,9 @@ const Home: React.FC = () => {
            key={index++}
            busName={ getMultiDirectionNames(item.RouteNo)} // checks if both directions go to this stop and if so allows toggling
            busNumber={item.RouteNo}
-           color='DA291C'
-           textColor='FFFFFF'
-           multiDirection={true}
+           color= {routeColour}
+           textColor={textColor}
+           multiDirection={false}
            stopTime={ trip.TripStartTime }></RouteInfoCard>)
       })
     } else {
@@ -292,26 +274,12 @@ const Home: React.FC = () => {
            busNumber={item.RouteNo}
            color='DA291C'
            textColor='FFFFFF'
-           multiDirection={true}
+           multiDirection={false}
            stopTime={ trip.TripStartTime }></RouteInfoCard>)
       })
     }
     return retVal
   })
-  /*
-  // commented out for now
-  const routesDisplayTemp = filteredRouteList.Gtfs?.map((item, index) => {
-    return (
-      <RoutesCards
-        key={index}
-        routeName={item.route_long_name}
-        routeID={item.route_id}
-        color={'00000'}
-        textColor={'black'}
-      ></RoutesCards>
-    )
-  })
-  */
 
   return (
     <div className="overflow-hidden grow">
@@ -334,8 +302,8 @@ const Home: React.FC = () => {
             </div>
           </div>
           {isStopSelected &&
-            <div onClick={() => setIsStopSelected(false)} className="grow-0 h-14 w-16 p-2 border-solid border-2 text-xl bg-red-700 hover:bg-red-900 align-middle rounded-md shadow-md">
-              <a className='text-center align-middle h-full'>Close</a>
+            <div onClick={() => setIsStopSelected(false)} className="grow-0 h-14 w-16 p-2 border-solid border-2 text-xl bg-red-700 hover:bg-red-900 align-middle rounded-md shadow-md text-center">
+              <a className='text-center align-middle h-full text-white'>X</a>
             </div>
           }
         </div>
