@@ -6,8 +6,17 @@ const About: React.FC = () => {
 <div><h1 className="lg:py-16 text-3xl font-bold flex justify-center">Website Credits</h1>
 <div className="container mx-auto">
   <div className="grid grid-cols-4 gap-5">
-    <div className="flex justify-center p-2 text-sm bg-gray-10 border-2 border-gray-300">Ben</div>
-    <div className="flex justify-center p-2 text-sm bg-gray-10 border-2 border-gray-300">Ethan</div>
+    <div className="flex justify-center p-2 text-sm bg-gray-10 border-2 border-gray-300 ">
+      <ul className="justify-center">
+        <li>Ben</li>
+        <li>About Page/Nav Bar</li>
+        <li></li>
+      </ul>
+    </div>
+    <div className="flex justify-center p-2 text-sm bg-gray-10 border-2 border-gray-300">
+      <ul>
+      <li>Ethan</li>
+      </ul></div>
     <div className="flex justify-center p-2 text-sm bg-gray-10 border-2 border-gray-300">Andrew</div>
     <div className="flex justify-center p-2 text-sm bg-gray-10 border-2 border-gray-300">Zake</div>
   </div>
@@ -29,11 +38,38 @@ const About: React.FC = () => {
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Your message</label>
               <textarea id="message" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Leave a comment..."></textarea>
           </div>
-          <button type="submit" className="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Send message</button>
+          <button type="submit" className="py-3 px-5 text-sm font-medium text-center bg-primary-600 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Send message</button>
       </form>
-      <p className="bg-gray-300 text-sm font-medium text-gray-900 dark:text-gray-300 lg:mb-0">200</p>
   </div>
 </section>
+  <footer>
+    <nav className="footer-nav bg-gray-700" aria-labelledby="footer-nav-label">
+      <div className="grid grid-cols-3 gap-4 col-md-3 text-white">
+        <div className="flex justify-center p-2 text-sm py-3 ">
+          <ul>
+            <li><a href="http://localhost:3000/">Home</a></li>
+            <li><a href="http://localhost:3000/about">About Us</a></li>
+          </ul>
+        </div>
+        <div className="flex justify-center p-2 text-sm ">
+          <ul>
+            <li><a href="http://localhost:3000/list">Map</a></li>
+            <li>Help</li>
+          </ul>
+        </div>
+        <div className="flex justify-center p-2 text-sm ">
+          <ul>
+            <li>Feedback</li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+      <div className="bottomtag flex justify-center bg-gray-900 text-white">
+        <div className="row">
+          <p className="col-8">ITEC4012</p>
+        </div>
+      </div>
+  </footer>
 </div></>;
 };
 

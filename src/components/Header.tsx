@@ -23,16 +23,18 @@ const Header: React.FC = () => {
   const headerTiles = headerLinks.map((val, index) => {
     return <HeaderTile title={val.title} link={val.link} key={index}></HeaderTile>
   });
+
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleToggle = () => {
-    setNavbarOpen(!navbarOpen)
+    setNavbarOpen(!navbarOpen);
   };
+
   return (<><head>
     <link href="/dist/output.css" rel="stylesheet"></link></head><nav className='navBar'>
       <ul className={`menuNav ${navbarOpen ? 'showMenu' : ''}`}>
         <button onClick={handleToggle}>
-          {navbarOpen ? (<MdClose style={{ color: '#7b7b7b', width: '60px', height: '60px' }} />) : (<FiMenu style={{ color: '#7b7b7b', width: '60px', height: '60px' }} />)}</button>
-        {headerTiles}
+          {navbarOpen ? (<MdClose style={{ color: '#7b7b7b', width: '60px', height: '60px' }} />) : (<FiMenu style={{ color: '#7b7b7b', width: '60px', height: '60px' }}/>)} </button>
+          <div id="header">{headerTiles}</div>
       </ul>
     </nav></>
   );

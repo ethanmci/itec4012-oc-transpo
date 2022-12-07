@@ -111,6 +111,36 @@ const BusList: React.FC<Props> = ({ tempProp }) => {
           </div>
         </div>
       </div>
+      <nav>
+      <footer>
+    <nav className="footer-nav bg-gray-700" aria-labelledby="footer-nav-label">
+      <div className="grid grid-cols-3 gap-4 col-md-3 text-white">
+        <div className="flex justify-center p-2 text-sm py-3 ">
+          <ul>
+            <li><a href="http://localhost:3000/">Home</a></li>
+            <li><a href="http://localhost:3000/about">About Us</a></li>
+          </ul>
+        </div>
+        <div className="flex justify-center p-2 text-sm ">
+          <ul>
+            <li><a href="http://localhost:3000/list">Map</a></li>
+            <li>Help</li>
+          </ul>
+        </div>
+        <div className="flex justify-center p-2 text-sm ">
+          <ul>
+            <li>Feedback</li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+      <div className="bottomtag flex justify-center bg-gray-900 text-white">
+        <div className="row">
+          <p className="col-8">ITEC4012</p>
+        </div>
+      </div>
+  </footer>
+  </nav>
     </div>
   )
 }
