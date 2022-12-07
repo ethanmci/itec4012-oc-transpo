@@ -236,23 +236,27 @@ const Home: React.FC = () => {
     return foundItems
   }
 
-  const routesDisplay = activeStopRoutes?.map((item) => {
-    console.log(routeList)
-    // getting colours
+  const getRouteColours = (routeNumber: string): { routeColour: string, textColor: string } => {
     let routeColour = 'DA291C' // defualt red
     let textColor = 'FFFFFF' // default black
     routeList.Gtfs?.every((route) => {
-      if (route.route_short_name === item.RouteNo) {
+      if (route.route_short_name === routeNumber) {
         routeColour = route.route_color
         textColor = route.route_text_color
-        return true
+        return false
       }
       return true
     })
+
+    return { routeColour, textColor }
+  }
+  const routesDisplay = activeStopRoutes?.map((item) => {
+    // Getting colours
+    const colours = getRouteColours(item.RouteNo);
     if (item.Trips === undefined) return null
-    console.log(item.Trips)
     const retVal: any = [];
     let index = 0
+    // The API returns two different kinds of objects when a stop has multiple routes, the array check determines if there are 1 or many results
     if (Array.isArray(item.Trips)) {
       item.Trips.forEach((trip) => {
         retVal.push(
@@ -260,8 +264,8 @@ const Home: React.FC = () => {
            key={index++}
            busName={ getMultiDirectionNames(item.RouteNo)} // checks if both directions go to this stop and if so allows toggling
            busNumber={item.RouteNo}
-           color= {routeColour}
-           textColor={textColor}
+           color= {colours.routeColour}
+           textColor={colours.textColor}
            multiDirection={false}
            stopTime={ trip.TripStartTime }></RouteInfoCard>)
       })
@@ -272,8 +276,8 @@ const Home: React.FC = () => {
            key={index++}
            busName={ getMultiDirectionNames(item.RouteNo)} // checks if both directions go to this stop and if so allows toggling
            busNumber={item.RouteNo}
-           color='DA291C'
-           textColor='FFFFFF'
+           color={colours.routeColour}
+           textColor={colours.textColor}
            multiDirection={false}
            stopTime={ trip.TripStartTime }></RouteInfoCard>)
       })
