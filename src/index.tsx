@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import BusList from './pages/BusList';
 import ComponentLab from './pages/ComponentLab'; // will never appear in header, must be manually accessed
 import './index.css';
+import About from './pages/About';
 
 const devIncludes =
   (process.env.NODE_ENV ?? 'development') === 'development' ? <Route path='/component_lab' element={<ComponentLab/>}/> : <></>
@@ -20,6 +21,7 @@ root.render(
         <Route path='/' element={<Layout/>}>
           <Route path='/' element={<Home/>}/>
           <Route path='/list' element={<BusList/>}/>
+          <Route path='/About' element={<About/>}/>
           { devIncludes }
         </Route>
       </Routes>
