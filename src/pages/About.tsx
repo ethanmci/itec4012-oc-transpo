@@ -9,16 +9,29 @@ const About: React.FC = () => {
     <div className="flex justify-center p-2 text-sm bg-gray-10 border-2 border-gray-300 ">
       <ul className="justify-center">
         <li>Ben</li>
-        <li>About Page/Nav Bar</li>
-        <li></li>
+        <li>About Page</li>
+        <li>Nav Bar</li>
       </ul>
     </div>
     <div className="flex justify-center p-2 text-sm bg-gray-10 border-2 border-gray-300">
       <ul>
-      <li>Ethan</li>
-      </ul></div>
-    <div className="flex justify-center p-2 text-sm bg-gray-10 border-2 border-gray-300">Andrew</div>
-    <div className="flex justify-center p-2 text-sm bg-gray-10 border-2 border-gray-300">Zake</div>
+        <li>Ethan</li>
+        <li>Google Map</li>
+        <li>Bus List Page</li>
+      </ul>
+    </div>
+    <div className="flex justify-center p-2 text-sm bg-gray-10 border-2 border-gray-300">
+      <ul>
+        <li>Andrew</li>
+        <li>Bus Radius</li>
+      </ul>
+      </div>
+    <div className="flex justify-center p-2 text-sm bg-gray-10 border-2 border-gray-300">
+      <ul>
+        <li>Zake</li>
+        <li>Bus Cards</li>
+      </ul>
+    </div>
   </div>
 </div>
 <section className="bg-white dark:bg-gray-900">

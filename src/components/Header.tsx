@@ -28,7 +28,7 @@ const Header: React.FC = () => {
       <head>
         <link href="/dist/output.css" rel="stylesheet"></link>
       </head>
-      <nav className="navBar">
+      <nav className="grid grid-cols-4">
         <div id="header">{headerTiles}</div>
       </nav>
     </>
