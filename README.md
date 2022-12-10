@@ -36,6 +36,15 @@ To make your life easier, the following VScode plugins are recommended:
 - Tailwind CSS Intellisense
 - GitLens
 
+## Dependencies / Libraries
+
+- Typescript
+- React
+- React Router
+- Google Maps React API
+- Tailwind CSS
+- ESlint
+
 ## Available Scripts
 
 In the project directory, you can run:
