@@ -4,6 +4,7 @@ import Layout from './components/layout/Layout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import BusList from './pages/BusList';
+import About from './pages/About';
 import ComponentLab from './pages/ComponentLab'; // will never appear in header, must be manually accessed
 import './index.css';
 
@@ -20,6 +21,7 @@ root.render(
         <Route path='/' element={<Layout/>}>
           <Route path='/' element={<Home/>}/>
           <Route path='/list' element={<BusList/>}/>
+          <Route path='/about' element={<About/>}/>
           { devIncludes }
         </Route>
       </Routes>
