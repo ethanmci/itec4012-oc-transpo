@@ -1,9 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import RouteInfoCard from '../components/RouteCard'
+import BusMap from '../components/BusMap';
+import { Route, Trip, Stop, GtfsStopQuery, GtfsBusQuery } from '../interfaces';
+// import StopInfoCard, { IStopInfoCard } from '../components/StopInfoCard'
+// import { StopContextProvider } from '../contexts/StopCardContext';
+/*
+interface inboundTrip {
+  StopNo: string
+  StopLabel: string
+  error: string
+  RouteDirection_RouteNo: string
+  RouteDirection_RouteLabel: string
+  RouteDirection_Direction: string
+  RouteDirection_Error: string
+  RRouteDirection_RequestProcessingTime: string
+  Trip_Longitude: string
+  Trip_Latitude: string
+  Trip_GPSSpeed: string
+  Trip_TripDestination: string
+  Trip_TripStartTime: string
+  Trip_AdjustedScheduleTime: string
+  Trip_AdjustmentAge: string
+  Trip_LastTripOfSchedule: string
+  Trip_BusType: string
+}
+
+interface GtfsTripQuery {
+  Query?: object
+  Gtfs?: inboundTrip[]
+}
+*/
+interface GtfsTripQuery {
+  Query?: object
+  Gtfs?: Trip[]
+}
+
+const refreshMS: number = 30000
+const radius: number = 0.00225225 * 2 // increased bc I don't think that's 500m w/o the multiplier
 
 const Home: React.FC = () => {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   return <div>Home page!</div>;
 =======
+=======
+>>>>>>> master
   const [location, setLocation] = useState<google.maps.LatLngLiteral>({ lat: 0, lng: 0 });
   const [stopList, setStopList] = useState<GtfsStopQuery>({});
   const [filteredStopList, setFilteredStopList] = useState<GtfsStopQuery>({});
@@ -289,6 +330,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       </div>
+<<<<<<< HEAD
       <footer>
     <nav className="footer-nav bg-gray-700" aria-labelledby="footer-nav-label">
       <div className="grid grid-cols-3 gap-4 col-md-3 text-white">
@@ -320,6 +362,10 @@ const Home: React.FC = () => {
     </div>
   )
 >>>>>>> Stashed changes
+=======
+    </div>
+  )
+>>>>>>> master
 };
 
 export default Home;
