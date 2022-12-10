@@ -1,7 +1,7 @@
 import React from 'react';
-import { useCardContext } from '../contexts/BusCardContext';
+import { useCardContext } from '../contexts/BusCardContext'
 // import BusInfoCard from './BusInfoCard';
-import { IBusInfoCard } from '../components/BusInfoCard'
+import { IBusInfoCard } from '../interfaces'
 
 // defining the component props
 

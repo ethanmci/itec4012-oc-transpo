@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import BusInfoCard, { IBusInfoCard } from '../components/BusInfoCard'
+import BusInfoCard from '../components/BusInfoCard'
 import BusMap from '../components/BusMap'
 import BusTile from '../components/BusTile'
 import { CardContextProvider } from '../contexts/BusCardContext'
-import { Bus } from '../interfaces'
+import { Bus, IBusInfoCard } from '../interfaces'
 // import SearchBar from '../components/SearchBar'; reimport later
 
 export interface Trip {
@@ -153,7 +153,7 @@ const BusList: React.FC = () => {
             <input
               onChange={(e) => filterBuses(e)}
               className="flex-auto h-14 p-2 border-solid border-2 text-xl border-slate-600 rounded-md shadow-md"
-              type="text"
+              type="number"
               name="bus-search"
             />
           </form>

@@ -85,3 +85,18 @@ export interface GtfsBusQuery {
   Query?: object
   Gtfs?: Bus[]
 }
+
+export interface IBusInfoCard {
+  busName: string // this is actually the bus number
+  busId: string
+  color: string
+  textColor: string
+  tripList: Trip[]
+}
+
+export interface BusName {
+  number: string
+  id: string
+  direction: string
+  name: string
+}
