@@ -29,7 +29,7 @@ const About: React.FC = () => {
       </div>
     <div className="flex justify-center p-2 text-sm bg-gray-10 border-2 border-gray-300">
       <ul>
-        <li>Zake</li>
+        <li>Zack</li>
         <li>Bus Cards</li>
         <li>Bus Information</li>
       </ul>
