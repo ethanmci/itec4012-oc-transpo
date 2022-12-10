@@ -26,7 +26,6 @@ const options: google.maps.MapOptions = {
 
 const radius: number = 500 // measured in meters
 
-// TODO: Move location to a context variable?
 const BusMap: React.FC<Props> = ({
   location,
   busSelected,

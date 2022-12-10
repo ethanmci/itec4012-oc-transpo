@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState } from 'react';
 // import Test from './test'
 // import BusInfoCard from '../components/BusInfoCard'
-import { IBusInfoCard } from '../components/BusInfoCard'
+import { IBusInfoCard } from '../interfaces'
 
 interface ICardContext {
   isCardOpen: boolean

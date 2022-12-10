@@ -1,22 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useCardContext } from '../contexts/BusCardContext';
 import ToggleSwitch from './ToggleSwitch'
-import { Trip } from '../pages/BusList'
+import { BusName, IBusInfoCard } from '../interfaces';
 // defining the component props
-export interface IBusInfoCard {
-  busName: string // this is actually the bus number
-  busId: string
-  color: string
-  textColor: string
-  tripList: Trip[]
-}
-
-interface BusName {
-  number: string
-  id: string
-  direction: string
-  name: string
-}
 
 const BusInfoCard: React.FC<IBusInfoCard> = ({ busName, color, textColor, busId, tripList }) => {
   const [busTrips, setBusTrips] = useState<BusName[]>([]);
@@ -78,7 +64,7 @@ const BusInfoCard: React.FC<IBusInfoCard> = ({ busName, color, textColor, busId,
       </div>
       <div className='p-5'>
         Information about the Busses goes here
-        </div>
+      </div>
     </div>
   );
 }

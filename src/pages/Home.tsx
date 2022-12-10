@@ -1,50 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import RouteInfoCard from '../components/RouteCard'
 import BusMap from '../components/BusMap';
-import { Route, Trip, Stop, GtfsStopQuery, GtfsBusQuery } from '../interfaces';
-// import StopInfoCard, { IStopInfoCard } from '../components/StopInfoCard'
-// import { StopContextProvider } from '../contexts/StopCardContext';
-/*
-interface inboundTrip {
-  StopNo: string
-  StopLabel: string
-  error: string
-  RouteDirection_RouteNo: string
-  RouteDirection_RouteLabel: string
-  RouteDirection_Direction: string
-  RouteDirection_Error: string
-  RRouteDirection_RequestProcessingTime: string
-  Trip_Longitude: string
-  Trip_Latitude: string
-  Trip_GPSSpeed: string
-  Trip_TripDestination: string
-  Trip_TripStartTime: string
-  Trip_AdjustedScheduleTime: string
-  Trip_AdjustmentAge: string
-  Trip_LastTripOfSchedule: string
-  Trip_BusType: string
-}
-
-interface GtfsTripQuery {
-  Query?: object
-  Gtfs?: inboundTrip[]
-}
-*/
-interface GtfsTripQuery {
-  Query?: object
-  Gtfs?: Trip[]
-}
+import { Route, Stop, GtfsStopQuery, GtfsBusQuery, GtfsTripQuery } from '../interfaces';
 
 const refreshMS: number = 30000
 const radius: number = 0.00225225 * 2 // increased bc I don't think that's 500m w/o the multiplier
 
 const Home: React.FC = () => {
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-  return <div>Home page!</div>;
-=======
-=======
->>>>>>> master
   const [location, setLocation] = useState<google.maps.LatLngLiteral>({ lat: 0, lng: 0 });
   const [stopList, setStopList] = useState<GtfsStopQuery>({});
   const [filteredStopList, setFilteredStopList] = useState<GtfsStopQuery>({});
@@ -53,8 +15,6 @@ const Home: React.FC = () => {
   const [isStopSelected, setIsStopSelected] = useState<boolean>(false)
   const [tripList, setTripList] = useState<GtfsTripQuery>({})
   const [activeStopRoutes, setActiveStopRoutes] = useState<Route[]>()
-  // const [filteredRouteList, setFilteredRouteList] = useState<GtfsRouteQuery>({});
-  // const [inboundTrip, setInboundTrip] = useState<GtfsTripQuery>({});
 
   const updateLocation = (): void => {
     navigator.geolocation.getCurrentPosition((pos: GeolocationPosition) => {
@@ -223,7 +183,6 @@ const Home: React.FC = () => {
         closestStop = stop
       }
     })
-    console.log(closestStop)
     setSelectedStop(closestStop)
     setIsStopSelected(true)
   }
@@ -243,7 +202,6 @@ const Home: React.FC = () => {
   }
 
   const routesDisplay = activeStopRoutes?.map((item) => {
-    console.log(routeList)
     // getting colours
     let routeColour = 'DA291C' // defualt red
     let textColor = 'FFFFFF' // default black
@@ -264,7 +222,7 @@ const Home: React.FC = () => {
         retVal.push(
           <RouteInfoCard
            key={index++}
-           busName={ getMultiDirectionNames(item.RouteNo)} // checks if both directions go to this stop and if so allows toggling
+           busName={getMultiDirectionNames(item.RouteNo)} // checks if both directions go to this stop and if so allows toggling
            busNumber={item.RouteNo}
            color= {routeColour}
            textColor={textColor}
@@ -276,7 +234,7 @@ const Home: React.FC = () => {
         retVal.push(
           <RouteInfoCard
            key={index++}
-           busName={ getMultiDirectionNames(item.RouteNo)} // checks if both directions go to this stop and if so allows toggling
+           busName={getMultiDirectionNames(item.RouteNo)} // checks if both directions go to this stop and if so allows toggling
            busNumber={item.RouteNo}
            color='DA291C'
            textColor='FFFFFF'
@@ -303,8 +261,8 @@ const Home: React.FC = () => {
         >
           <div className="flex-auto h-14 p-2 border-solid border-2 text-xl bg-slate-100 align-middle rounded-md shadow-md">
             <div className='flex justify-between'>
-              <h2 className='px-5'>{isStopSelected && selectedStop?.stop_name }</h2>
-              <h2 className='px-5'>{isStopSelected && selectedStop?.stop_code }</h2>
+              <h2 className='px-5'>{ isStopSelected && selectedStop?.stop_name }</h2>
+              <h2 className='px-5'>{ isStopSelected && selectedStop?.stop_code }</h2>
             </div>
           </div>
           {isStopSelected &&
@@ -330,42 +288,8 @@ const Home: React.FC = () => {
           </div>
         </div>
       </div>
-<<<<<<< HEAD
-      <footer>
-    <nav className="footer-nav bg-gray-700" aria-labelledby="footer-nav-label">
-      <div className="grid grid-cols-3 gap-4 col-md-3 text-white">
-        <div className="flex justify-center p-2 text-sm py-3 ">
-          <ul>
-            <li><a href="http://localhost:3000/">Home</a></li>
-            <li><a href="http://localhost:3000/about">About Us</a></li>
-          </ul>
-        </div>
-        <div className="flex justify-center p-2 text-sm ">
-          <ul>
-            <li><a href="http://localhost:3000/list">Map</a></li>
-            <li>Help</li>
-          </ul>
-        </div>
-        <div className="flex justify-center p-2 text-sm ">
-          <ul>
-            <li>Feedback</li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-      <div className="bottomtag flex justify-center bg-gray-900 text-white">
-        <div className="row">
-          <p className="col-8">ITEC4012</p>
-        </div>
-      </div>
-  </footer>
     </div>
   )
->>>>>>> Stashed changes
-=======
-    </div>
-  )
->>>>>>> master
 };
 
 export default Home;
