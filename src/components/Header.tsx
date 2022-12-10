@@ -28,8 +28,8 @@ const Header: React.FC = () => {
       <head>
         <link href="/dist/output.css" rel="stylesheet"></link>
       </head>
-      <nav className="navBar">
-        <div id="header">{headerTiles}</div>
+      <nav className="grid grid-cols-3 lg:py-4 bg-gray-900">
+        {headerTiles}
       </nav>
     </>
   )
