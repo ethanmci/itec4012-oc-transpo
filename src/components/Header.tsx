@@ -30,12 +30,20 @@ const Header: React.FC = () => {
   };
 
   return (<><head>
+<<<<<<< Updated upstream
     <link href="/dist/output.css" rel="stylesheet"></link></head><nav className='navBar'>
       <ul className={`menuNav ${navbarOpen ? 'showMenu' : ''}`}>
         <button onClick={handleToggle}>
           {navbarOpen ? (<MdClose style={{ color: '#7b7b7b', width: '60px', height: '60px' }} />) : (<FiMenu style={{ color: '#7b7b7b', width: '60px', height: '60px' }}/>)} </button>
           <div id="header">{headerTiles}</div>
       </ul>
+=======
+    <link href="/dist/output.css" rel="stylesheet"></link></head>
+    <nav>
+      <div className="grid grid-cols-3 gap-0 col-md-3 text-white text-center sm:text-xl">
+        {headerTiles}
+      </div>
+>>>>>>> Stashed changes
     </nav></>
   );
 };
